@@ -2,31 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
+use App\Http\Responses\CreatedResponse;
+use App\Http\Responses\NoContentResponse;
+use App\Http\Responses\SuccessResponse;
 use App\Services\TaskService;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller {
 
     public function __construct(private readonly TaskService $service){}
 
-    public function index() {
+    public function index(): SuccessResponse {
+        $taskList = $this->service->index();
 
+        return new SuccessResponse($taskList);
     }
 
-    public function show() {
+    public function show(int $id): SuccessResponse {
+        $task = $this->service->show($id);
 
+        return new SuccessResponse($task);
     }
 
-    public function store() {
+    public function store(TaskRequest $request): CreatedResponse {
+        $task = $this->service->store($request->validated());
 
+        return new CreatedResponse($task);
     }
 
-    public function update() {
+    public function update(int $id, TaskRequest $request): SuccessResponse {
+        $task = $this->service->update($id, $request->validated());
 
+        return new SuccessResponse($task);
     }
 
-    public function destroy() {
+    public function destroy(int $id): NoContentResponse {
+        $this->service->destroy($id);
 
+        return new NoContentResponse();
     }
 
 
