@@ -6,7 +6,7 @@ use App\Enums\StatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class CreateTaskRequest extends FormRequest
+class TaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
