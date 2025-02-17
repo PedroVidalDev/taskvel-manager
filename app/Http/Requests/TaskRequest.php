@@ -6,7 +6,7 @@ use App\Enums\StatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class CreateTaskRequest extends FormRequest
+class TaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,6 +27,7 @@ class CreateTaskRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'status' => ['required', 'string', new Enum(StatusEnum::class)],
+            'priority' => ['required', 'integer', 'min:1', 'max:5'],
             'due_date' => ['required', 'date'],
         ];
     }
