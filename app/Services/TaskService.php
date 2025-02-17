@@ -22,6 +22,21 @@ class TaskService {
         return new TaskResource($this->repository->store($data));
     }
 
+    public function storeSubtask(int $id, mixed $data): TaskResource {
+        $mainTask = $this->repository->show($id);
+        $subTask = $this->repository->store($data);
+
+        $mainTask->subtasks()->attach($subTask->id);
+
+        return new TaskResource($subTask);
+    }
+
+    public function getAllSubtasks(int $id): AnonymousResourceCollection {
+        $task = $this->repository->show($id);
+
+        return TaskResource::collection($task->subtasks);
+    }
+
     public function update($id, $data): TaskResource {
         return new TaskResource($this->repository->update($id, $data));
     }

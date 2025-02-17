@@ -30,6 +30,18 @@ class TaskController extends Controller {
         return new CreatedResponse($task);
     }
 
+    public function storeSubtask(int $id, TaskRequest $request): CreatedResponse {
+        $task = $this->service->storeSubtask($id, $request->validated());
+
+        return new CreatedResponse($task);
+    }
+
+    public function getAllSubtasks(int $id): SuccessResponse {
+        $subtasks = $this->service->getAllSubtasks($id);
+
+        return new SuccessResponse($subtasks);
+    }
+
     public function update(int $id, TaskRequest $request): SuccessResponse {
         $task = $this->service->update($id, $request->validated());
 
