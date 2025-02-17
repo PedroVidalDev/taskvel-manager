@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-enum StatusApi {
-    case SUCCESS;
-    case ERROR;
-    case CREATED;
+enum StatusApi: string {
+    case SUCCESS = 'SUCCESS';
+    case ERROR = 'ERROR';
+    case CREATED = 'CREATED';
 }

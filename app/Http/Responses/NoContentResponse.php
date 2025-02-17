@@ -8,6 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NoContentResponse extends ApiResponse {
     public function __construct() {
-        parent::__construct(StatusApi::SUCCESS, null, Response::HTTP_NO_CONTENT);
+        parent::__construct(StatusApi::SUCCESS->value, null, Response::HTTP_NO_CONTENT);
     }
 }
