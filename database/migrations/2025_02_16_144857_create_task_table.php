@@ -18,7 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->enum('status', (array)StatusEnum::class);
+            $table->enum('status', array_column(StatusEnum::cases(), 'value'));
+            $table->integer('priority');
             $table->dateTime('due_date');
             $table->timestamps();
         });
