@@ -27,6 +27,7 @@ class TaskRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'status' => ['required', 'string', new Enum(StatusEnum::class)],
+            'priority' => ['required', 'integer', 'min:1', 'max:5'],
             'due_date' => ['required', 'date'],
         ];
     }
