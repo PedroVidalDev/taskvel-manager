@@ -2,8 +2,9 @@
 
 namespace App\Enums;
 
-enum StatusEnum {
-    case FINISHED;
-    case WORKING;
-    case IN_PROGRESS;
+enum StatusEnum: string
+{
+    case FINISHED = 'FINISHED';
+    case WORKING = 'WORKING';
+    case IN_PROGRESS = 'IN_PROGRESS';
 }
