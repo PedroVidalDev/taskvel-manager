@@ -3,13 +3,21 @@
 namespace App\Services;
 
 use App\Http\Repositories\UserRepository;
+use App\Http\Resources\Task\TaskResource;
 use App\Http\Resources\User\UserResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService {
 
     public function __construct(private readonly UserRepository $repository) {}
+
+    public function getTasks(int $id): AnonymousResourceCollection {
+        $user = $this->repository->show($id);
+
+        return TaskResource::collection($user->tasks);
+    }
 
     public function login(mixed $data): array {
         if(!$token = JWTAuth::attempt($data)) {
