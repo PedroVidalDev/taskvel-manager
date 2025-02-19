@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Http\Repositories\TaskRepository;
-use App\Http\Resources\TaskResource;
+use App\Http\Resources\Comment\CommentResource;
+use App\Http\Resources\Task\TaskResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskService {
@@ -16,6 +17,10 @@ class TaskService {
 
     public function show(int $id): TaskResource {
         return new TaskResource($this->repository->show($id));
+    }
+
+    public function showComments(int $id): AnonymousResourceCollection {
+        return CommentResource::collection($this->repository->show($id)->comments);
     }
 
     public function store(mixed $data): TaskResource {

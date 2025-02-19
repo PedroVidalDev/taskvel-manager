@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TaskRequest;
+use App\Http\Requests\Task\TaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Http\Responses\CreatedResponse;
 use App\Http\Responses\NoContentResponse;
 use App\Http\Responses\SuccessResponse;
@@ -20,6 +21,12 @@ class TaskController extends Controller {
 
     public function show(int $id): SuccessResponse {
         $task = $this->service->show($id);
+
+        return new SuccessResponse($task);
+    }
+
+    public function showComments(int $id): SuccessResponse {
+        $task = $this->service->showComments($id);
 
         return new SuccessResponse($task);
     }
@@ -42,7 +49,7 @@ class TaskController extends Controller {
         return new SuccessResponse($subtasks);
     }
 
-    public function update(int $id, TaskRequest $request): SuccessResponse {
+    public function update(int $id, UpdateTaskRequest $request): SuccessResponse {
         $task = $this->service->update($id, $request->validated());
 
         return new SuccessResponse($task);
