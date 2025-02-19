@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Repositories\UserRepository;
 use App\Http\Resources\Task\TaskResource;
 use App\Http\Resources\User\UserResource;
+use App\Jobs\MailJob;
 use App\Mail\Notification;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Mail;
@@ -34,7 +35,11 @@ class UserService {
 
         $user = $this->repository->store($data);
 
-        Mail::to($user->email)->send(new Notification("Taskvel | Conta criada com sucesso!", "Olá $user->name, sua conta foi criada com sucesso no Taskvel! Sinta-se livre para organizar suas tarefas no nosso serviço!"));
+        dispatch(new MailJob([
+            'email' => $user->email,
+            'title' => "Taskvel | Conta criada com sucesso!",
+            'text' => "Olá $user->name, sua conta foi criada com sucesso no Taskvel! Sinta-se livre para organizar suas tarefas no nosso serviço!"
+        ]));
 
         return new UserResource($user);
     }

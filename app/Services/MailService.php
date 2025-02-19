@@ -2,12 +2,17 @@
 
 namespace App\Services;
 
+use App\Jobs\MailJob;
 use App\Mail\Notification;
 use Illuminate\Support\Facades\Mail;
 
 class MailService {
     public function sendMail(mixed $data): array {
-        Mail::to($data->email)->send(new Notification($data->title, $data->text));
+        dispatch(new MailJob([
+            'email' => $data->email,
+            'title' => $data->title,
+            'text' => $data->text
+        ]));
 
         return [
             'message' => 'Email sent successfully',
