@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -31,6 +32,15 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('*')) {
                 return response()->json([
                     'status' => '404',
+                    'message' => $exception->getMessage(),
+                ], 409);
+            }
+        });
+
+        $exceptions->render(function (JWTException $exception, \Illuminate\Http\Request $request) {
+            if ($request->is('*')) {
+                return response()->json([
+                    'status' => '403',
                     'message' => $exception->getMessage(),
                 ], 409);
             }
