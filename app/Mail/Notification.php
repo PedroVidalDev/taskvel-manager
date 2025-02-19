@@ -14,12 +14,12 @@ class Notification extends Mailable
     use Queueable, SerializesModels;
 
     public string $title;
-    public string $context;
+    public string $content;
 
     public function __construct(string $title, string $content)
     {
         $this->title = $title;
-        $this->context = $content;
+        $this->content = $content;
     }
 
     /**
@@ -40,7 +40,7 @@ class Notification extends Mailable
         return new Content(
             view: 'mail.mail',
             with: [
-                'content' => $this->context,
+                'content' => $this->content,
             ]
         );
     }

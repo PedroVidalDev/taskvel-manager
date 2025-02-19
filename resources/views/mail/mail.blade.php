@@ -1,3 +1,3 @@
 <div>
-    {{ $text }}
+    {{ $content }}
 </div>

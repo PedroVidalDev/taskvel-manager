@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Http\Repositories\UserRepository;
 use App\Http\Resources\Task\TaskResource;
 use App\Http\Resources\User\UserResource;
+use App\Mail\Notification;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -30,7 +32,11 @@ class UserService {
     public function store(mixed $data): UserResource {
         $data['password'] = bcrypt($data['password']);
 
-        return new UserResource($this->repository->store($data));
+        $user = $this->repository->store($data);
+
+        Mail::to($user->email)->send(new Notification("Taskvel | Conta criada com sucesso!", "Olá $user->name, sua conta foi criada com sucesso no Taskvel! Sinta-se livre para organizar suas tarefas no nosso serviço!"));
+
+        return new UserResource($user);
     }
 
     public function update(int $id, mixed $data): UserResource {
