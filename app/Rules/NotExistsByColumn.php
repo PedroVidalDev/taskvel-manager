@@ -2,28 +2,27 @@
 
 namespace App\Rules;
 
-use App\Models\Task;
-use App\Models\User;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Eloquent\Model;
 
-class ExistsById implements ValidationRule
+class NotExistsByColumn implements ValidationRule
 {
 
     protected $name;
     protected $model;
+    protected $column;
 
-    public function __construct($name, $model)
+    public function __construct($name, $model, $column)
     {
         $this->name = $name;
         $this->model = $model;
+        $this->column = $column;
     }
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(!$this->model::where('id', $value)->exists()) {
-            $fail("The {$this->name} with id $value does not exist.");
+        if($this->model::where($this->column, $value)->exists()) {
+            $fail("The {$this->name} with column $this->column $value already exist.");
         }
     }
 }

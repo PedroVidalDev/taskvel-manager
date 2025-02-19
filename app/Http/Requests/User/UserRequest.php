@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Comment;
+namespace App\Http\Requests\User;
 
-use App\Models\Task;
 use App\Models\User;
-use App\Rules\ExistsByColumn;
+use App\Rules\NotExistsByColumn;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCommentRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +24,9 @@ class UpdateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['string', 'max:255'],
-            'user_id' => ['integer', new ExistsByColumn("User", User::class, "id")],
-            'task_id' => ['integer', new ExistsByColumn("Task", Task::class, "id")],
+            'name' => ["required", "string", "min:3", "max:255"],
+            'email' => ["required", "string", "email", new NotExistsByColumn("User", User::class, "email")],
+            'password' => ["required", "string", "min:8"],
         ];
     }
 }
