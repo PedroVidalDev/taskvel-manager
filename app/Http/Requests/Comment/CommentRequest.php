@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\Comment;
 
-use App\Rules\ExistsByTaskId;
-use App\Rules\ExistsByUserId;
+use App\Models\Task;
+use App\Models\User;
+use App\Rules\ExistsById;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CommentRequest extends FormRequest
@@ -24,9 +25,9 @@ class CommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['required', 'string', 'max:255'],
-            'user_id' => ['required', 'integer', new ExistsByUserId],
-            'task_id' => ['required', 'integer', new ExistsByTaskId],
+            'content' => ['required', 'string', 'min:3', 'max:255'],
+            'user_id' => ['required', 'integer', new ExistsById("User", User::class)],
+            'task_id' => ['required', 'integer', new ExistsById("Task", Task::class)],
         ];
     }
 }
