@@ -24,6 +24,12 @@ class TaskController extends Controller {
         return new SuccessResponse($task);
     }
 
+    public function showComments(int $id): SuccessResponse {
+        $task = $this->service->showComments($id);
+
+        return new SuccessResponse($task);
+    }
+
     public function store(TaskRequest $request): CreatedResponse {
         $task = $this->service->store($request->validated());
 
