@@ -4,8 +4,7 @@ namespace App\Http\Requests\Comment;
 
 use App\Models\Task;
 use App\Models\User;
-use App\Rules\ExistsByTaskId;
-use App\Rules\ExistsById;
+use App\Rules\ExistsByColumn;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCommentRequest extends FormRequest
@@ -27,8 +26,8 @@ class UpdateCommentRequest extends FormRequest
     {
         return [
             'content' => ['string', 'max:255'],
-            'user_id' => ['integer', new ExistsById("User", User::class)],
-            'task_id' => ['integer', new ExistsById("Task", Task::class)],
+            'user_id' => ['integer', new ExistsByColumn("User", User::class, "id")],
+            'task_id' => ['integer', new ExistsByColumn("Task", Task::class, "id")],
         ];
     }
 }
