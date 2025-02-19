@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Http\Repositories\TaskRepository;
-use App\Http\Resources\CommentResource;
-use App\Http\Resources\TaskResource;
+use App\Http\Resources\Comment\CommentResource;
+use App\Http\Resources\Task\TaskResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskService {

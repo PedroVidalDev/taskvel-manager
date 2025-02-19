@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Http\Repositories\CommentRepository;
-use App\Http\Resources\CommentResource;
+use App\Http\Resources\Comment\CommentResource;
 
 class CommentService {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Comment;
 
 use App\Rules\ExistsByTaskId;
 use App\Rules\ExistsByUserId;
