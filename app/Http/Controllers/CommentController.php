@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CommentRequest;
+use App\Http\Requests\Comment\CommentRequest;
+use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Http\Responses\CreatedResponse;
 use App\Http\Responses\NoContentResponse;
 use App\Http\Responses\SuccessResponse;
@@ -24,7 +25,7 @@ class CommentController extends Controller {
         return new CreatedResponse($comment);
     }
 
-    public function update(int $id, CommentRequest $data): SuccessResponse {
+    public function update(int $id, UpdateCommentRequest $data): SuccessResponse {
         $comment = $this->service->update($id, $data->validated());
 
         return new SuccessResponse($comment);
