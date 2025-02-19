@@ -14,6 +14,12 @@ class UserController extends Controller {
 
     public function __construct(private readonly UserService $service) {}
 
+    public function showTasks(int $id): SuccessResponse {
+        $tasks = $this->service->getTasks($id);
+
+        return new SuccessResponse($tasks);
+    }
+
     public function register(UserRequest $request): CreatedResponse {
         $user = $this->service->store($request->validated());
 
