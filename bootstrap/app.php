@@ -2,10 +2,13 @@
 
 namespace Bootstrap;
 
+use App\Jobs\MailJob;
+use App\Models\Task;
 use Illuminate\Contracts\Queue\EntityNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -17,6 +20,21 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+    })
+    ->withSchedule(function ($schedule) {
+        $schedule->call(function () {
+            $tasks = Task::where('due_date', now()->toDateString())
+                ->where('status', '!=', 'FINISHED')
+                ->get();
+
+            foreach ($tasks as $task) {
+                dispatch(new MailJob([
+                    'email' => $task->user->email,
+                    'title' => "Taskvel | Tarefa com limite para hoje!",
+                    'text' => "A tarefa {$task->title} tem limite para hoje! Não se esqueça"
+                ]));
+            }
+        })->everyMinute();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (ValidationException $exception, \Illuminate\Http\Request $request) {
