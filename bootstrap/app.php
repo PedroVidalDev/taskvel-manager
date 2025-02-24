@@ -34,7 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'text' => "A tarefa {$task->title} tem limite para hoje! Não se esqueça"
                 ]));
             }
-        })->everyMinute();
+        })->daily();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (ValidationException $exception, \Illuminate\Http\Request $request) {
