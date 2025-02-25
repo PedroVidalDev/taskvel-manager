@@ -18,3 +18,4 @@ Taskvel is a task manager application that helps you to manage your daily tasks.
 3. Run `composer install` to install the dependencies
 4. Run `php artisan migrate` to run the migrations
 5. Run `php artisan serve` to start the server
+6. Run `php artisan queue:work` to start the queue worker
