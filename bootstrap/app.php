@@ -6,6 +6,7 @@ use App\Jobs\MailJob;
 use App\Models\Scopes\ActiveScope;
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Queue\EntityNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -71,6 +72,15 @@ return Application::configure(basePath: dirname(__DIR__))
                     'status' => '403',
                     'message' => $exception->getMessage(),
                 ], 409);
+            }
+        });
+
+        $exceptions->render(function (AuthenticationException $e, \Illuminate\Http\Request $request) {
+            if ($request->is('*')) {
+                return response()->json([
+                    'status' => '401',
+                    'message' => $e->getMessage(),
+                ], 401);
             }
         });
     })->create();
