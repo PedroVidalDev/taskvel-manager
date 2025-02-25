@@ -42,8 +42,9 @@ class TaskService {
         return TaskResource::collection($task->subtasks);
     }
 
-    public function update($id, $data): TaskResource {
-        return new TaskResource($this->repository->update($id, $data));
+    public function update(int $id, mixed $data): TaskResource {
+        $task = $this->repository->show($id);
+        return new TaskResource($this->repository->update($task, $data));
     }
 
     public function destroy(int $id): void {

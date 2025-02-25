@@ -37,4 +37,8 @@ class Task extends Model
     public function comments(): HasMany {
         return $this->hasMany(Comment::class, 'task_id', 'id');
     }
+
+    public function taskUpdateHistoric(): HasMany {
+        return $this->hasMany(TaskUpdateHistoric::class, 'task_id', 'id');
+    }
 }
