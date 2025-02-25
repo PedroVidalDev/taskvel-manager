@@ -9,6 +9,8 @@ use App\Http\Requests\User\UserRequest;
 use App\Http\Responses\CreatedResponse;
 use App\Http\Responses\NoContentResponse;
 use App\Http\Responses\SuccessResponse;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class UserController extends Controller {
 
@@ -42,5 +44,15 @@ class UserController extends Controller {
         $token = $this->service->login($request->validated());
 
         return new SuccessResponse($token);
+    }
+
+    public function confirmEmail(int $id, Request $request) {
+        Log::info("Confirming email for user $id");
+
+        $url = $request->query('hash');
+
+        $this->service->confirmEmail($id, $url);
+
+        return new NoContentResponse();
     }
 }
