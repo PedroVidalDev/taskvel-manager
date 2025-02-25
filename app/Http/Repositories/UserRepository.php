@@ -29,6 +29,6 @@ class UserRepository {
         if(!User::where('id', $id)->exists()) {
             throw new EntityNotFoundException('User', $id);
         }
-        User::destroy($id);
+        User::where('id', $id)->update(array('active' => false));
     }
 }
