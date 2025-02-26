@@ -4,10 +4,15 @@ namespace App\Services;
 
 use App\Http\Repositories\CommentRepository;
 use App\Http\Resources\Comment\CommentResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CommentService {
 
     public function __construct(private readonly CommentRepository $repository) {}
+
+    public function index(): AnonymousResourceCollection {
+        return CommentResource::collection($this->repository->index());
+    }
 
     public function show(int $id): CommentResource {
         return new CommentResource($this->repository->show($id));

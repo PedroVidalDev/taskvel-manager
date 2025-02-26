@@ -7,6 +7,7 @@ use App\Http\Resources\Comment\CommentResource;
 use App\Models\Comment;
 use App\Services\CommentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use PHPUnit\Framework\TestCase;
 
 class CommentServiceTest extends TestCase

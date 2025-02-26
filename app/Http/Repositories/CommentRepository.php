@@ -4,8 +4,13 @@ namespace App\Http\Repositories;
 
 use App\Models\Comment;
 use Illuminate\Contracts\Queue\EntityNotFoundException;
+use Illuminate\Database\Eloquent\Collection;
 
 class CommentRepository {
+
+    public function index(): Collection {
+        return Comment::all();
+    }
 
     public function show(int $id): Comment {
         if(!Comment::where('id', $id)->exists()) {
