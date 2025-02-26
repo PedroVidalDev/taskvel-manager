@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Repositories\CommentRepository;
 use App\Http\Resources\Comment\CommentResource;
+use Illuminate\Contracts\Queue\EntityNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CommentService {
@@ -15,6 +16,9 @@ class CommentService {
     }
 
     public function show(int $id): CommentResource {
+        if(!$this->repository->existsByColumn('id', $id)) {
+            throw new EntityNotFoundException('Comment', $id);
+        }
         return new CommentResource($this->repository->show($id));
     }
 
@@ -29,6 +33,9 @@ class CommentService {
     }
 
     public function destroy(int $id): void {
+        if(!$this->repository->existsByColumn('id', $id)) {
+            throw new EntityNotFoundException('Comment', $id);
+        }
         $this->repository->destroy($id);
     }
 }

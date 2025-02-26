@@ -12,10 +12,11 @@ class CommentRepository {
         return Comment::all();
     }
 
+    public function existsByColumn(string $column, mixed $value): bool {
+        return Comment::where($column, $value)->exists();
+    }
+
     public function show(int $id): Comment {
-        if(!Comment::where('id', $id)->exists()) {
-            throw new EntityNotFoundException('Comment', $id);
-        }
         return Comment::find($id);
     }
 
@@ -30,9 +31,6 @@ class CommentRepository {
     }
 
     public function destroy(int $id): void {
-        if(!Comment::where('id', $id)->exists()) {
-            throw new EntityNotFoundException('Comment', $id);
-        }
         Comment::destroy($id);
     }
 
