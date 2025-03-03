@@ -3,7 +3,6 @@
 namespace App\Http\Repositories;
 
 use App\Models\Task;
-use App\Models\TaskUpdateHistoric;
 use Illuminate\Contracts\Queue\EntityNotFoundException;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -26,7 +25,6 @@ class TaskRepository {
 
     public function update(Task $task, mixed $data): Task {
         $task->update($data);
-        TaskUpdateHistoric::create(['task_id' => $task->id,]);
 
         return $task;
     }
@@ -37,6 +35,4 @@ class TaskRepository {
         }
         Task::destroy($id);
     }
-
-
 }
