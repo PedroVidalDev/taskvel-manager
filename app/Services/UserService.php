@@ -17,12 +17,6 @@ class UserService {
 
     public function __construct(private readonly UserRepository $repository) {}
 
-    public function getTasks(int $id): AnonymousResourceCollection {
-        $user = $this->repository->show($id);
-
-        return TaskResource::collection($user->tasks);
-    }
-
     public function login(mixed $data): array {
         if(!$token = JWTAuth::attempt($data)) {
             throw new JWTException("Invalid credentials");

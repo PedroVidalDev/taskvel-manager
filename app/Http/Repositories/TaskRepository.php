@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TaskRepository {
 
-    public function index(): Collection {
-        return Task::all();
+    public function index($userId): Collection {
+        return Task::where('user_id', $userId)->get();
     }
 
     public function show(int $id): Task {

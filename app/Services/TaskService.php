@@ -11,8 +11,8 @@ class TaskService {
 
     public function __construct(private readonly TaskRepository $repository) {}
 
-    public function index(): AnonymousResourceCollection {
-        return TaskResource::collection($this->repository->index());
+    public function index(int $userId): AnonymousResourceCollection {
+        return TaskResource::collection($this->repository->index($userId));
     }
 
     public function show(int $id): TaskResource {
