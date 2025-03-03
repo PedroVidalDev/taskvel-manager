@@ -62,8 +62,6 @@ class UserService {
     }
 
     public function confirmEmail(int $id, string $url) {
-        Log::info("Confirming email for user $id");
-
         $this->repository->confirmEmail($id, $url);
 
         $user = $this->repository->show($id);
