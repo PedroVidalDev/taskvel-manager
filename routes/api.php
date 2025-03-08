@@ -9,4 +9,10 @@ Route::middleware("auth:api")->group(function () {
     require __DIR__ . '/comment.php';
 });
 
+Route::get('/health', function () {
+    return response()->json([
+        'message' => 'Im alive',
+    ], 200);
+});
+
 require __DIR__ . '/user.php';
