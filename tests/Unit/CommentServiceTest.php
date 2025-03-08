@@ -25,7 +25,7 @@ class CommentServiceTest extends TestCase
         $this->service = new CommentService($this->commentRepositoryMock);
     }
 
-    private array $commentMock = [
+    private array $commentData = [
         'id' => 1,
         'content' => 'This is a comment',
         'user_id' => 1,
@@ -38,16 +38,16 @@ class CommentServiceTest extends TestCase
         $commentMock = \Mockery::mock(Comment::class);
         $commentMock->shouldReceive('getAttribute')
             ->with('id')
-            ->andReturn($this->commentMock['id']);
+            ->andReturn($this->commentData['id']);
         $commentMock->shouldReceive('getAttribute')
             ->with('content')
-            ->andReturn($this->commentMock['content']);
+            ->andReturn($this->commentData['content']);
         $commentMock->shouldReceive('getAttribute')
             ->with('user_id')
-            ->andReturn($this->commentMock['user_id']);
+            ->andReturn($this->commentData['user_id']);
         $commentMock->shouldReceive('getAttribute')
             ->with('task_id')
-            ->andReturn($this->commentMock['task_id']);
+            ->andReturn($this->commentData['task_id']);
 
         return $commentMock;
     }
@@ -62,21 +62,21 @@ class CommentServiceTest extends TestCase
 
         $this->commentRepositoryMock->shouldReceive('existsByColumn')
             ->once()
-            ->with('id', $this->commentMock['id'])
+            ->with('id', $this->commentData['id'])
             ->andReturn(true);
 
         $comment = $this->service->show(1);
 
-        $this->assertEquals($this->commentMock['id'], $comment->id);
-        $this->assertEquals($this->commentMock['content'], $comment->content);
-        $this->assertEquals($this->commentMock['user_id'], $comment->user_id);
-        $this->assertEquals($this->commentMock['task_id'], $comment->task_id);
+        $this->assertEquals($this->commentData['id'], $comment->id);
+        $this->assertEquals($this->commentData['content'], $comment->content);
+        $this->assertEquals($this->commentData['user_id'], $comment->user_id);
+        $this->assertEquals($this->commentData['task_id'], $comment->task_id);
     }
 
     public function test_should_fail_in_show_one_comment(): void {
         $this->commentRepositoryMock->shouldReceive('existsByColumn')
             ->once()
-            ->with('id', $this->commentMock['id'])
+            ->with('id', $this->commentData['id'])
             ->andReturn(false);
 
         $this->expectException(EntityNotFoundException::class);
@@ -90,7 +90,7 @@ class CommentServiceTest extends TestCase
 
         $this->commentRepositoryMock->shouldReceive('existsByColumn')
             ->once()
-            ->with('id', $this->commentMock['id'])
+            ->with('id', $this->commentData['id'])
             ->andReturn(true);
 
         $this->service->destroy(1);
@@ -101,7 +101,7 @@ class CommentServiceTest extends TestCase
     public function test_should_fail_in_delete_one_comment(): void {
         $this->commentRepositoryMock->shouldReceive('existsByColumn')
             ->once()
-            ->with('id', $this->commentMock['id'])
+            ->with('id', $this->commentData['id'])
             ->andReturn(false);
 
         $this->expectException(EntityNotFoundException::class);
@@ -114,15 +114,15 @@ class CommentServiceTest extends TestCase
         $this->commentRepositoryMock
             ->shouldReceive('store')
             ->once()
-            ->with($this->commentMock)
+            ->with($this->commentData)
             ->andReturn($commentMock);
 
-        $result = $this->service->store($this->commentMock);
+        $result = $this->service->store($this->commentData);
 
-        $this->assertEquals($this->commentMock['id'], $result->id);
-        $this->assertEquals($this->commentMock['content'], $result->content);
-        $this->assertEquals($this->commentMock['user_id'], $result->user_id);
-        $this->assertEquals($this->commentMock['task_id'], $result->task_id);
+        $this->assertEquals($this->commentData['id'], $result->id);
+        $this->assertEquals($this->commentData['content'], $result->content);
+        $this->assertEquals($this->commentData['user_id'], $result->user_id);
+        $this->assertEquals($this->commentData['task_id'], $result->task_id);
 
         $this->assertInstanceOf(CommentResource::class, $result);
     }
@@ -139,14 +139,14 @@ class CommentServiceTest extends TestCase
         $this->commentRepositoryMock
             ->shouldReceive('update')
             ->once()
-            ->with($commentMock, $this->commentMock)
+            ->with($commentMock, $this->commentData)
             ->andReturn($commentMock);
 
-        $result = $this->service->update(1, $this->commentMock);
+        $result = $this->service->update(1, $this->commentData);
 
-        $this->assertEquals($this->commentMock['id'], $result->id);
-        $this->assertEquals($this->commentMock['content'], $result->content);
-        $this->assertEquals($this->commentMock['user_id'], $result->user_id);
-        $this->assertEquals($this->commentMock['task_id'], $result->task_id);
+        $this->assertEquals($this->commentData['id'], $result->id);
+        $this->assertEquals($this->commentData['content'], $result->content);
+        $this->assertEquals($this->commentData['user_id'], $result->user_id);
+        $this->assertEquals($this->commentData['task_id'], $result->task_id);
     }
 }

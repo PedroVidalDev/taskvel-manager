@@ -22,7 +22,7 @@ class UserServiceTest extends TestCase
         $this->service = new UserService($this->userRepositoryMock);
     }
 
-    private array $userMock = [
+    private array $userData = [
         'id' => 1,
         'name' => 'Pedro Vidal',
         'email' => 'pedrovidal@gmail.com'
@@ -32,13 +32,13 @@ class UserServiceTest extends TestCase
         $userMock = \Mockery::mock(User::class);
         $userMock->shouldReceive('getAttribute')
             ->with('id')
-            ->andReturn($this->userMock['id']);
+            ->andReturn($this->userData['id']);
         $userMock->shouldReceive('getAttribute')
             ->with('name')
-            ->andReturn($this->userMock['name']);
+            ->andReturn($this->userData['name']);
         $userMock->shouldReceive('getAttribute')
             ->with('email')
-            ->andReturn($this->userMock['email']);
+            ->andReturn($this->userData['email']);
 
         return $userMock;
     }
