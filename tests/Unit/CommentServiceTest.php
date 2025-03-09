@@ -130,6 +130,11 @@ class CommentServiceTest extends TestCase
     public function test_should_update_one_comment() {
         $commentMock = $this->createCommentMock();
 
+        $this->commentRepositoryMock->shouldReceive('existsByColumn')
+            ->once()
+            ->with('id', $this->commentData['id'])
+            ->andReturn(true);
+
         $this->commentRepositoryMock
             ->shouldReceive('show')
             ->once()
@@ -148,5 +153,15 @@ class CommentServiceTest extends TestCase
         $this->assertEquals($this->commentData['content'], $result->content);
         $this->assertEquals($this->commentData['user_id'], $result->user_id);
         $this->assertEquals($this->commentData['task_id'], $result->task_id);
+    }
+
+    public function test_should_fail_in_update_one_comment() {
+        $this->commentRepositoryMock->shouldReceive('existsByColumn')
+            ->once()
+            ->with('id', $this->commentData['id'])
+            ->andReturn(false);
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->service->update(1, $this->commentData);
     }
 }

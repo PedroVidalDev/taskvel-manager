@@ -10,10 +10,11 @@ use Illuminate\Contracts\Queue\EntityNotFoundException;
 class UserRepository {
 
     public function show(int $id): User {
-        if(!User::where('id', $id)->exists()) {
-            throw new EntityNotFoundException('User', $id);
-        }
         return User::find($id);
+    }
+
+    public function existsByColumn(string $column, $value): bool {
+        return User::where($column, $value)->exists();
     }
 
     public function store($data): User {
@@ -45,9 +46,6 @@ class UserRepository {
     }
 
     public function destroy(int $id): void {
-        if(!User::where('id', $id)->exists()) {
-            throw new EntityNotFoundException('User', $id);
-        }
         User::where('id', $id)->update(array('active' => false));
     }
 }

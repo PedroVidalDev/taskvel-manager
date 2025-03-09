@@ -23,6 +23,10 @@ class CommentService {
     }
 
     public function update(int $id, mixed $data): CommentResource {
+        if(!$this->repository->existsByColumn('id', $id)) {
+            throw new EntityNotFoundException('Comment', $id);
+        }
+
         $comment = $this->repository->show($id);
 
         return new CommentResource($this->repository->update($comment, $data));
