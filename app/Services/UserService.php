@@ -3,25 +3,17 @@
 namespace App\Services;
 
 use App\Http\Repositories\UserRepository;
-use App\Http\Resources\Task\TaskResource;
 use App\Http\Resources\User\UserResource;
 use App\Jobs\MailJob;
-use App\Mail\Notification;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Contracts\Queue\EntityNotFoundException;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Hash;
 
 class UserService {
 
     public function __construct(private readonly UserRepository $repository) {}
-
-    public function getTasks(int $id): AnonymousResourceCollection {
-        $user = $this->repository->show($id);
-
-        return TaskResource::collection($user->tasks);
-    }
 
     public function login(mixed $data): array {
         if(!$token = JWTAuth::attempt($data)) {
@@ -32,7 +24,7 @@ class UserService {
     }
 
     public function store(mixed $data): UserResource {
-        $data['password'] = bcrypt($data['password']);
+        $data['password'] = Hash::make($data['password']);
 
         $user = $this->repository->store($data);
 
@@ -55,8 +47,12 @@ class UserService {
     }
 
     public function update(int $id, mixed $data): UserResource {
+        if($this->repository->existsByColumn('id', $id) === false) {
+            throw new EntityNotFoundException('User', $id);
+        }
+
         $user = $this->repository->show($id);
-        $data['password'] = bcrypt($data['password']);
+        $data['password'] = Hash::make($data['password']);
 
         return new UserResource($this->repository->update($user, $data));
     }
@@ -74,6 +70,10 @@ class UserService {
     }
 
     public function destroy(int $id): void {
+        if($this->repository->existsByColumn('id', $id) === false) {
+            throw new EntityNotFoundException('User', $id);
+        }
+
         $this->repository->destroy($id);
     }
 }

@@ -13,6 +13,12 @@ class CommentController extends Controller {
 
     public function __construct(private readonly CommentService $service) {}
 
+    public function index(): SuccessResponse {
+        $comments = $this->service->index();
+
+        return new SuccessResponse($comments);
+    }
+
     public function show(int $id): SuccessResponse {
         $comment = $this->service->show($id);
 

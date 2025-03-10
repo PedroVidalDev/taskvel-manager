@@ -14,7 +14,9 @@ class TaskController extends Controller {
     public function __construct(private readonly TaskService $service){}
 
     public function index(): SuccessResponse {
-        $taskList = $this->service->index();
+        $user = auth()->user();
+        $userId = $user->id;
+        $taskList = $this->service->index($userId);
 
         return new SuccessResponse($taskList);
     }
