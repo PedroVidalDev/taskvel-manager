@@ -43,8 +43,6 @@ class TaskService {
         $mainTask = $this->repository->show($id);
         $subTask = $this->repository->store($data);
 
-        Log::info($mainTask->id);
-        Log::info($subTask->id);
         $mainTask->subtasks()->attach($subTask->id);
 
         return new TaskResource($subTask);
