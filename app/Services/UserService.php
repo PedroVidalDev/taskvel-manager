@@ -26,8 +26,6 @@ class UserService {
     public function store(mixed $data): UserResource {
         $data['password'] = Hash::make($data['password']);
 
-        Log::info($data);
-
         $user = $this->repository->store($data);
 
         dispatch(new MailJob([
