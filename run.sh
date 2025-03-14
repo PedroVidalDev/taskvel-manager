@@ -1,19 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-# Start Docker container with the database
-echo "Starting Docker container..."
-docker compose up -d --build
+# Espera o PostgreSQL estar pronto
+wait-for-it db:5432 --timeout=30 --strict -- echo "Banco de dados está pronto!"
 
-# Wait for the database to be ready
-echo "Waiting for the database to be ready..."
-./wait-for-it.sh localhost:5432 --timeout=100 -- echo "Database is ready!"
-
-sleep 2
-
-# Run migrations
-echo "Running migrations..."
+# Rodar as migrações e o servidor Laravel
 php artisan migrate
-
-# Start the PHP development server
-echo "Starting PHP development server..."
 php artisan serve

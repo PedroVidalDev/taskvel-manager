@@ -1,24 +1,20 @@
 #!/bin/bash
 
-echo "Starting Docker container..."
-docker compose up -d --build
+# Define your container name or ID
+CONTAINER_NAME="taskvel_app"
 
-echo "Waiting for the database to be ready..."
-./wait-for-it.sh localhost:5432 --timeout=100 -- echo "Database is ready!"
+docker compose up --build -d
+wait-for-it localhost:8000 --timeout=30 --strict -- echo "Servidor Laravel está pronto!"
 
-sleep 2
+# Run php artisan test inside the container
+docker exec -it $CONTAINER_NAME php artisan test
 
-echo "Running migrations..."
-php artisan migrate
+# Check if the command was successful
+if [ $? -eq 0 ]; then
+    echo "Tests ran successfully!"
+else
+    echo "Tests failed!"
+    exit 1
+fi
 
-echo "Starting the PHPUnit tests..."
-php artisan test
-
-# Capture the exit status of the tests
-TEST_EXIT_STATUS=$?
-
-echo "Stopping and removing Docker containers..."
-docker compose down
-
-#Exit with the status of the test command
-exit $TEST_EXIT_STATUS
+docker compose down -v --remove-orphans
