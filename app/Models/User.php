@@ -36,8 +36,8 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function tasks(): HasMany {
-        return $this->hasMany(Task::class, 'user_id', 'id');
+    public function projects(): HasMany {
+        return $this->hasMany(Project::class, 'user_id', 'id');
     }
 
     public function confirmEmailUrl(): HasOne {

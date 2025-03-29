@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Task;
 
 use App\Enums\StatusEnum;
+use App\Models\Project;
 use App\Models\User;
 use App\Rules\ExistsByColumn;
 use Illuminate\Foundation\Http\FormRequest;
@@ -31,7 +32,7 @@ class TaskRequest extends FormRequest
             'status' => ['required', 'string', new Enum(StatusEnum::class)],
             'priority' => ['required', 'integer', 'min:1', 'max:5'],
             'due_date' => ['required', 'date'],
-            'user_id' => ['required', 'integer', new ExistsByColumn('User', User::class, 'id')],
+            'project_id' => ['required', 'integer', new ExistsByColumn("Project", Project::class, "id")],
         ];
     }
 }

@@ -12,8 +12,8 @@ class Task extends Model
     protected $table = 'tasks';
 
     protected $fillable = [
+        'project_id',
         'title',
-        'user_id',
         'description',
         'status',
         'priority',
@@ -22,16 +22,16 @@ class Task extends Model
         'updated_at'
     ];
 
+    public function project(): BelongsTo {
+        return $this->belongsTo(Project::class, 'project_id', 'id');
+    }
+
     public function subtasks(): BelongsToMany {
         return $this->belongsToMany(Task::class, 'subtasks_relation', 'main_task_id', 'sub_task_id');
     }
 
     public function mainTask(): BelongsToMany {
         return $this->belongsToMany(Task::class, 'subtasks_relation', 'sub_task_id', 'main_task_id');
-    }
-
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function comments(): HasMany {
