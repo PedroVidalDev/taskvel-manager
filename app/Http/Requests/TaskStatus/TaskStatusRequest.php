@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Task;
+namespace App\Http\Requests\TaskStatus;
 
-use App\Models\TaskStatus;
+use App\Models\Project;
 use App\Rules\ExistsByColumn;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskRequest extends FormRequest
+class TaskStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['string', 'max:255'],
-            'description' => ['string'],
-            'status' => ['integer', new ExistsByColumn("TaskStatus", TaskStatus::class, "id")],
-            'priority' => ['integer', 'min:1', 'max:5'],
-            'due_date' => ['date'],
+            'name' => ['required', 'string', 'min:3', 'max:50'],
+            'project_id' => ['required', 'integer', new ExistsByColumn("Project", Project::class, "id")],
         ];
     }
 }

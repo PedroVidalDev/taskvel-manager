@@ -8,6 +8,7 @@ Route::middleware("auth:api")->group(function () {
     require __DIR__ . '/task.php';
     require __DIR__ . '/comment.php';
     require __DIR__ . '/project.php';
+    require __DIR__ . '/taskStatus.php';
 });
 
 Route::get('/health', function () {
