@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('project_id');
             $table->string('title');
             $table->text('description');
             $table->enum('status', array_column(StatusEnum::cases(), 'value'));
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->dateTime('due_date');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');;
         });
     }
 

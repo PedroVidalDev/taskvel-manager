@@ -26,7 +26,6 @@ class CommentRequest extends FormRequest
     {
         return [
             'content' => ['required', 'string', 'min:3', 'max:255'],
-            'user_id' => ['required', 'integer', new ExistsByColumn("User", User::class, "id")],
             'task_id' => ['required', 'integer', new ExistsByColumn("Task", Task::class, "id")],
         ];
     }

@@ -11,17 +11,6 @@ class CommentService {
 
     public function __construct(private readonly CommentRepository $repository) {}
 
-    public function index(): AnonymousResourceCollection {
-        return CommentResource::collection($this->repository->index());
-    }
-
-    public function show(int $id): CommentResource {
-        if(!$this->repository->existsByColumn('id', $id)) {
-            throw new EntityNotFoundException('Comment', $id);
-        }
-        return new CommentResource($this->repository->show($id));
-    }
-
     public function update(int $id, mixed $data): CommentResource {
         if(!$this->repository->existsByColumn('id', $id)) {
             throw new EntityNotFoundException('Comment', $id);
@@ -29,10 +18,13 @@ class CommentService {
 
         $comment = $this->repository->show($id);
 
+        $data['user_id'] = auth()->user()->id;
+
         return new CommentResource($this->repository->update($comment, $data));
     }
 
     public function store(mixed $data): CommentResource {
+        $data['user_id'] = auth()->user()->id;
         return new CommentResource($this->repository->store($data));
     }
 
