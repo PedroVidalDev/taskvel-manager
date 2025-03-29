@@ -13,14 +13,6 @@ class TaskController extends Controller {
 
     public function __construct(private readonly TaskService $service){}
 
-    public function index(): SuccessResponse {
-        $user = auth()->user();
-        $userId = $user->id;
-        $taskList = $this->service->index($userId);
-
-        return new SuccessResponse($taskList);
-    }
-
     public function show(int $id): SuccessResponse {
         $task = $this->service->show($id);
 

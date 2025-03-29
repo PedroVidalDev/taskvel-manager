@@ -26,7 +26,6 @@ class UpdateCommentRequest extends FormRequest
     {
         return [
             'content' => ['string', 'max:255'],
-            'user_id' => ['integer', new ExistsByColumn("User", User::class, "id")],
             'task_id' => ['integer', new ExistsByColumn("Task", Task::class, "id")],
         ];
     }
