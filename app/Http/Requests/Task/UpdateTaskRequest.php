@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Task;
 
-use App\Enums\StatusEnum;
+use App\Models\TaskStatus;
+use App\Rules\ExistsByColumn;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -26,7 +26,7 @@ class UpdateTaskRequest extends FormRequest
         return [
             'title' => ['string', 'max:255'],
             'description' => ['string'],
-            'status' => ['string', new Enum(StatusEnum::class)],
+            'status' => ['integer', new ExistsByColumn("TaskStatus", TaskStatus::class, "id")],
             'priority' => ['integer', 'min:1', 'max:5'],
             'due_date' => ['date'],
         ];

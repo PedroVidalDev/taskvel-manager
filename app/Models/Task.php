@@ -26,6 +26,10 @@ class Task extends Model
         return $this->belongsTo(Project::class, 'project_id', 'id');
     }
 
+    public function taskStatus(): BelongsTo {
+        return $this->belongsTo(TaskStatus::class, 'status', 'id');
+    }
+
     public function subtasks(): BelongsToMany {
         return $this->belongsToMany(Task::class, 'subtasks_relation', 'main_task_id', 'sub_task_id');
     }

@@ -19,11 +19,12 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id');
             $table->string('title');
             $table->text('description');
-            $table->enum('status', array_column(StatusEnum::cases(), 'value'));
+            $table->unsignedBigInteger('status');
             $table->integer('priority');
             $table->dateTime('due_date');
             $table->timestamps();
 
+            $table->foreign('status')->references('id')->on('task_status')->onDelete('cascade');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');;
         });
     }
