@@ -7,6 +7,7 @@ use App\Http\Resources\Project\ProjectResource;
 use App\Http\Resources\Task\TaskResource;
 use Illuminate\Contracts\Queue\EntityNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectService {
     public function __construct(private readonly ProjectRepository $repository) {}
@@ -21,7 +22,7 @@ class ProjectService {
         }
 
         $project = $this->repository->show($id);
-        $this->authorize('show', $project);
+        Gate::authorize('show', $project);
 
         return new ProjectResource($project);
     }
@@ -32,7 +33,7 @@ class ProjectService {
         }
 
         $project = $this->repository->show($id);
-        $this->authorize('update', $project);
+        Gate::authorize('update', $project);
 
         $user = auth()->user();
         $data['user_id'] = $user->id;
@@ -52,7 +53,7 @@ class ProjectService {
         }
 
         $project = $this->repository->show($id);
-        $this->authorize('destroy', $project);
+        Gate::authorize('destroy', $project);
 
         $this->repository->destroy($id);
     }
@@ -63,7 +64,7 @@ class ProjectService {
         }
 
         $project = $this->repository->show($id);
-        $this->authorize('tasks', $project);
+        Gate::authorize('tasks', $project);
 
         return TaskResource::collection($project->tasks);
     }
@@ -74,7 +75,7 @@ class ProjectService {
         }
 
         $project = $this->repository->show($id);
-        $this->authorize('tasksByStatus', $project);
+        Gate::authorize('tasksByStatus', $project);
 
         return $project->taskStatus()->with('tasks')->get();
     }

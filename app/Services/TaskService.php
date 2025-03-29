@@ -7,6 +7,7 @@ use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Task\TaskResource;
 use Illuminate\Contracts\Queue\EntityNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class TaskService {
@@ -19,7 +20,7 @@ class TaskService {
         }
 
         $task = $this->repository->show($id);
-        $this->authorize('show', $task);
+        Gate::authorize('show', $task);
 
         return new TaskResource($task);
     }
@@ -30,7 +31,7 @@ class TaskService {
         }
 
         $task = $this->repository->show($id);
-        $this->authorize('showComments', $task);
+        Gate::authorize('showComments', $task);
 
         return CommentResource::collection($task->comments);
     }
@@ -45,7 +46,7 @@ class TaskService {
         }
 
         $mainTask = $this->repository->show($id);
-        $this->authorize('storeSubtask', $mainTask);
+        Gate::authorize('storeSubtask', $mainTask);
 
         $subTask = $this->repository->store($data);
 
@@ -60,7 +61,7 @@ class TaskService {
         }
 
         $task = $this->repository->show($id);
-        $this->authorize('getAllSubtasks', $task);
+        Gate::authorize('getAllSubtasks', $task);
 
         return TaskResource::collection($task->subtasks);
     }
@@ -70,7 +71,7 @@ class TaskService {
             throw new EntityNotFoundException('Task', $id);
         }
         $task = $this->repository->show($id);
-        $this->authorize('update', $task);
+        Gate::authorize('update', $task);
 
         return new TaskResource($this->repository->update($task, $data));
     }
@@ -80,7 +81,7 @@ class TaskService {
             throw new EntityNotFoundException('Task', $id);
         }
         $task = $this->repository->show($id);
-        $this->authorize('destroy', $task);
+        Gate::authorize('destroy', $task);
 
         $this->repository->destroy($id);
     }
