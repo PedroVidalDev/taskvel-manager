@@ -56,4 +56,13 @@ class ProjectService {
         $project = $this->repository->show($id);
         return TaskResource::collection($project->tasks);
     }
+
+    public function tasksByStatus(int $id) {
+        if(!$this->repository->existsByColumn('id', $id)) {
+            throw new EntityNotFoundException('Project', $id);
+        }
+
+        $project = $this->repository->show($id);
+        return $project->taskStatus()->with('tasks')->get();
+    }
 }

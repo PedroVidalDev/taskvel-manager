@@ -46,4 +46,10 @@ class ProjectController extends Controller {
 
         return new SuccessResponse($tasks);
     }
+
+    public function tasksByStatus(int $id): SuccessResponse {
+        $tasks = $this->service->tasksByStatus($id);
+
+        return new SuccessResponse($tasks);
+    }
 }
