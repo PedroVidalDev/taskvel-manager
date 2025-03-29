@@ -19,7 +19,11 @@ class ProjectService {
         if(!$this->repository->existsByColumn('id', $id)) {
             throw new EntityNotFoundException('Project', $id);
         }
-        return new ProjectResource($this->repository->show($id));
+
+        $project = $this->repository->show($id);
+        $this->authorize('show', $project);
+
+        return new ProjectResource($project);
     }
 
     public function update(int $id, mixed $data): ProjectResource {
@@ -28,6 +32,7 @@ class ProjectService {
         }
 
         $project = $this->repository->show($id);
+        $this->authorize('update', $project);
 
         $user = auth()->user();
         $data['user_id'] = $user->id;
@@ -45,6 +50,10 @@ class ProjectService {
         if(!$this->repository->existsByColumn('id', $id)) {
             throw new EntityNotFoundException('Project', $id);
         }
+
+        $project = $this->repository->show($id);
+        $this->authorize('destroy', $project);
+
         $this->repository->destroy($id);
     }
 
@@ -54,6 +63,8 @@ class ProjectService {
         }
 
         $project = $this->repository->show($id);
+        $this->authorize('tasks', $project);
+
         return TaskResource::collection($project->tasks);
     }
 
@@ -63,6 +74,8 @@ class ProjectService {
         }
 
         $project = $this->repository->show($id);
+        $this->authorize('tasksByStatus', $project);
+
         return $project->taskStatus()->with('tasks')->get();
     }
 }

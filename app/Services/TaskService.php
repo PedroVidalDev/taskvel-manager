@@ -17,14 +17,22 @@ class TaskService {
         if(!$this->repository->existsByColumn('id', $id)) {
             throw new EntityNotFoundException('Task', $id);
         }
-        return new TaskResource($this->repository->show($id));
+
+        $task = $this->repository->show($id);
+        $this->authorize('show', $task);
+
+        return new TaskResource($task);
     }
 
     public function showComments(int $id): AnonymousResourceCollection {
         if(!$this->repository->existsByColumn('id', $id)) {
             throw new EntityNotFoundException('Task', $id);
         }
-        return CommentResource::collection($this->repository->show($id)->comments);
+
+        $task = $this->repository->show($id);
+        $this->authorize('showComments', $task);
+
+        return CommentResource::collection($task->comments);
     }
 
     public function store(mixed $data): TaskResource {
@@ -37,6 +45,8 @@ class TaskService {
         }
 
         $mainTask = $this->repository->show($id);
+        $this->authorize('storeSubtask', $mainTask);
+
         $subTask = $this->repository->store($data);
 
         $mainTask->subtasks()->attach($subTask->id);
@@ -50,6 +60,7 @@ class TaskService {
         }
 
         $task = $this->repository->show($id);
+        $this->authorize('getAllSubtasks', $task);
 
         return TaskResource::collection($task->subtasks);
     }
@@ -59,6 +70,8 @@ class TaskService {
             throw new EntityNotFoundException('Task', $id);
         }
         $task = $this->repository->show($id);
+        $this->authorize('update', $task);
+
         return new TaskResource($this->repository->update($task, $data));
     }
 
@@ -66,6 +79,9 @@ class TaskService {
         if(!$this->repository->existsByColumn('id', $id)) {
             throw new EntityNotFoundException('Task', $id);
         }
+        $task = $this->repository->show($id);
+        $this->authorize('destroy', $task);
+
         $this->repository->destroy($id);
     }
 }
